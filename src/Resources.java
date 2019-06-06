@@ -1,3 +1,7 @@
+import components.Boat;
+import components.Door;
+import components.Sas;
+import components.Valve;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utils.GlobalVars;
@@ -7,22 +11,53 @@ import utils.GlobalVars;
  */
 public class Resources {
     Image backgroundImage;
-    Image doorAvalImage;
-    Image doorAmontImage;
+    Image boatImage;
+    Image firstDoorImage;
+    Image secondDoorImage;
+    Image firstValveImage;
+    Image secondValveImage;
+    Image sasImage;
     ImageView backgroundView;
-    ImageView doorAvalView;
-    ImageView doorAmontView;
+    ImageView boatView;
+    ImageView firstDoorView;
+    ImageView secondDoorView;
+    ImageView firstValveView;
+    ImageView secondValveView;
+    ImageView sasView;
+
+    Boat boat;
+    Sas sas;
+    Door firstDoor;
+    Door secondDoor;
+    Valve firstValve;
+    Valve secondValve;
 
 
-    public void loadResourses() {
+    public void loadResourses(int sens) {
         try {
 
 
             backgroundImage = new Image(Resources.class.getResourceAsStream("res/background.png"));
-            doorAvalImage = new Image(Resources.class.getResourceAsStream("res/door.png"));
-            doorAmontImage = new Image(Resources.class.getResourceAsStream("res/door.png"));
+
+            if (sens == GlobalVars.AVAL_TO_AMONT)
+                boatImage = new Image(Resources.class.getResourceAsStream("res/boat_aval.gif"));
+
+            if(sens == GlobalVars.AMONT_TO_AVAL)
+                boatImage = new Image(Resources.class.getResourceAsStream("res/boat_amant.gif"));
+
+            firstDoorImage = new Image(Resources.class.getResourceAsStream("res/door.png"));
+            secondDoorImage = new Image(Resources.class.getResourceAsStream("res/door.png"));
+
+            firstValveImage = new Image(Resources.class.getResourceAsStream("res/open_valve.png"));
+            firstValveImage = new Image(Resources.class.getResourceAsStream("res/open_valve.png"));
+
+            secondValveImage = new Image(Resources.class.getResourceAsStream("res/open_valve.png"));
+            secondValveImage = new Image(Resources.class.getResourceAsStream("res/open_valve.png"));
+
+            sasImage = new Image(Resources.class.getResourceAsStream("res/sas.png"));
+
             // attaching
-            attachDefaultImages();
+            attachDefaultImages(sens);
 
         } catch (Exception e) {
             System.out.println("error loading one of the resourses");
@@ -30,21 +65,61 @@ public class Resources {
 
     }
 
-    private void attachDefaultImages() {
+    private void attachDefaultImages(int sens) {
         try {
             //
             backgroundView = new ImageView(backgroundImage);
 
+            //
+            if(sens == GlobalVars.AVAL_TO_AMONT){
+                boatView = new ImageView(boatImage);
+                boatView.setTranslateX(GlobalVars.BOAT_AVAL_XPOSITION);
+                boatView.setTranslateY(GlobalVars.BOAT_MIN_YPOSITION);
+                boat = new Boat(boatView);
 
-            doorAmontView = new ImageView(doorAmontImage);
-            doorAmontView.setTranslateX(GlobalVars.DOOR_AMONT_XPOSITION);
-            doorAmontView.setTranslateY(GlobalVars.DOOR_AMONT_YPOSITION);
+                sasView = new ImageView(sasImage);
+                sasView.setTranslateX(GlobalVars.SAS_XPOSITION);
+                sasView.setTranslateY(GlobalVars.SAS_MAX_YPOSITION);
+                sas = new Sas(sasView);
+            }
+            else if(sens == GlobalVars.AMONT_TO_AVAL){
+                boatView = new ImageView(boatImage);
+                boatView.setTranslateX(GlobalVars.BOAT_AMONT_XPOSITION);
+                boatView.setTranslateY(GlobalVars.BOAT_MAX_YPOSITION);
+                boat = new Boat(boatView);
+
+                sasView = new ImageView(sasImage);
+                sasView.setTranslateX(GlobalVars.SAS_XPOSITION);
+                sasView.setTranslateY(GlobalVars.SAS_MIN_YPOSITION);
+                sas = new Sas(sasView);
+
+            }
 
 
-            doorAvalView = new ImageView(doorAvalImage);
-            doorAvalView.setTranslateX(GlobalVars.DOOR_AVAL_XPOSITION);
-            doorAvalView.setTranslateY(GlobalVars.DOOR_AVAL_YPOSITION);
 
+            //
+            firstDoorView = new ImageView(firstDoorImage);
+            firstDoorView.setTranslateX(GlobalVars.FIRST_DOOR_XPOSITION);
+            firstDoorView.setTranslateY(GlobalVars.DOOR_MAX_YPOSITION);
+            firstDoor = new Door(firstDoorView);
+
+            //
+            secondDoorView = new ImageView(secondDoorImage);
+            secondDoorView.setTranslateX(GlobalVars.SECOND_DOOR_XPOSITION);
+            secondDoorView.setTranslateY(GlobalVars.DOOR_MIN_YPOSITION);
+            secondDoor = new Door(secondDoorView);
+
+            //
+            firstValveView = new ImageView(firstValveImage);
+            firstValveView.setTranslateX(GlobalVars.FIRST_VANNE_XPOSTION);
+            firstValveView.setTranslateY(GlobalVars.FIRST_VANNE_YPOSTION);
+            firstValve = new Valve(firstValveView);
+
+            //
+            secondValveView = new ImageView(secondValveImage);
+            secondValveView.setTranslateX(GlobalVars.SECOND_VANNE_XPOSTION);
+            secondValveView.setTranslateY(GlobalVars.SECOND_VANNE_YPOSTION);
+            secondValve = new Valve(secondValveView);
 
             //
 

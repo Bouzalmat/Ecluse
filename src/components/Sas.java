@@ -6,12 +6,12 @@ import javafx.scene.image.ImageView;
 /**
  * Created by BouzalmatAbderrahman on 6/6/2019
  */
-public class Door extends Objects {
-    public Door(ImageView image, State state) {
+public class Sas extends Objects {
+    public Sas(ImageView image, State state) {
         super(image, state);
     }
 
-    public Door(ImageView image) {
+    public Sas(ImageView image) {
         super(image);
     }
 

@@ -1,6 +1,6 @@
 package components;
 
-import javax.swing.text.html.ImageView;
+import javafx.scene.image.ImageView;
 
 /**
  * Created by BouzalmatAbderrahman on 6/6/2019

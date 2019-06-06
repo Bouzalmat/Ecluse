@@ -12,6 +12,7 @@ public class Ecluse extends Application {
     Pane pane;
     Scene scene;
     Resources res;
+    int sens = 1;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -21,17 +22,17 @@ public class Ecluse extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        initResourses();
+        initResourses(sens);
         initWorld();
     }
 
-    private void initResourses() {
+    private void initResourses(int sens) {
         res = new Resources();
-        res.loadResourses();
+        res.loadResourses(sens);
     }
 
     public void initWorld() {
-        addObjects(res.backgroundView, res.doorAmontView, res.doorAvalView);
+        addObjects(res.backgroundView, res.boatView, res.firstDoorView, res.secondDoorView, res.sasView, res.firstValveView, res.secondValveView);
     }
 
     private void addObjects(Node... n) {
