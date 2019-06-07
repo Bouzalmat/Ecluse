@@ -2,6 +2,7 @@ import components.Boat;
 import components.Door;
 import components.Sas;
 import components.Valve;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utils.GlobalVars;
@@ -34,6 +35,8 @@ public class Resources {
     Door secondDoor;
     Valve firstValve;
     Valve secondValve;
+
+    Button b;
 
 
     public void loadResourses(int sens) {
@@ -76,12 +79,12 @@ public class Resources {
             backgroundView = new ImageView(backgroundImage);
 
             controlBackgroundView = new ImageView(controlBackgroundImage);
-            controlBackgroundView.setTranslateY(458);
+            //controlBackgroundView.setTranslateY(458);
 
             //
             if(sens == GlobalVars.AVAL_TO_AMONT_DIRECTION){
                 boatView = new ImageView(boatImage);
-                boatView.setTranslateX(GlobalVars.BOAT_AVAL_XPOSITION);
+                boatView.setTranslateX(GlobalVars.BOAT_LEVEL2_XPOSITION);
                 boatView.setTranslateY(GlobalVars.BOAT_MIN_YPOSITION);
                 boat = new Boat(boatView);
 
@@ -89,7 +92,6 @@ public class Resources {
                 sasView.setTranslateX(GlobalVars.SAS_XPOSITION);
                 sasView.setTranslateY(GlobalVars.SAS_MAX_YPOSITION);
                 sas = new Sas(sasView);
-                sas.close();
             }
             else if(sens == GlobalVars.AMONT_TO_AVAL_DIRECTION){
                 boatView = new ImageView(boatImage);
@@ -101,8 +103,6 @@ public class Resources {
                 sasView.setTranslateX(GlobalVars.SAS_XPOSITION);
                 sasView.setTranslateY(GlobalVars.SAS_MIN_YPOSITION);
                 sas = new Sas(sasView);
-                sas.open();
-
             }
 
 
@@ -132,6 +132,9 @@ public class Resources {
             secondValve = new Valve(secondValveView);
 
             //
+
+
+            b = new Button("button");
 
         } catch (Exception e) {
             System.out.println("error attaching imgs");
