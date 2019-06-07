@@ -6,7 +6,7 @@ package utils;
 public class GlobalVars {
     //window size
     public static final int WINDOW_WIDTH = 892;
-    public static final int WINDOW_HEIGHT = 433;
+    public static final int WINDOW_HEIGHT = 458;
 
     //boat positions
     public static final int BOAT_AVAL_XPOSITION = 0;

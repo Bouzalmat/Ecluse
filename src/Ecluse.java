@@ -1,23 +1,70 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import utils.GlobalVars;
+import utils.Strings;
 
 /**
  * Created by BouzalmatAbderrahman on 6/6/2019
  */
 public class Ecluse extends Application {
-    Pane pane;
+    BorderPane root;
     Scene scene;
+    Pane center;
     Resources res;
     int sens = 1;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        pane = new Pane();
-        scene = new Scene(pane, GlobalVars.WINDOW_WIDTH, GlobalVars.WINDOW_HEIGHT);
+        root = new BorderPane();
+        center = new Pane();
+        scene = new Scene(root, GlobalVars.WINDOW_WIDTH, GlobalVars.WINDOW_HEIGHT);
+
+
+        MenuBar menubar = new MenuBar(); //creating MenuBar
+        Menu Direction = new Menu(Strings.DIRECTION_MENU); //creating Menu
+        //creating Menu Item
+        MenuItem avalToAmantItem = new MenuItem(Strings.DIRECTION_ITEM1);
+        MenuItem amantToAvalItem = new MenuItem(Strings.DIRECTION_ITEM2);
+
+
+        Direction.getItems().addAll(avalToAmantItem, amantToAvalItem);//adding Menu Items to the Menu
+        menubar.getMenus().add(Direction); //adding Menu to the MenuBar
+
+        // actions events
+        EventHandler<ActionEvent> avalToAmantEvent = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                sens = -1;
+                initResourses(sens);
+                initWorld();
+            }
+        };
+
+        EventHandler<ActionEvent> amantToAvalEvent = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                sens = 1;
+                initResourses(sens);
+                initWorld();
+            }
+        };
+
+
+        // add event
+        avalToAmantItem.setOnAction(avalToAmantEvent);
+        amantToAvalItem.setOnAction(amantToAvalEvent);
+
+        root.setTop(menubar);
+        root.setCenter(center);
 
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -36,11 +83,11 @@ public class Ecluse extends Application {
     }
 
     private void addObjects(Node... n) {
-        pane.getChildren().addAll(n);
+        center.getChildren().addAll(n);
     }
 
     private void addObjects(Node n) {
-        pane.getChildren().add(0, n);
+        center.getChildren().add(0, n);
     }
 
 
