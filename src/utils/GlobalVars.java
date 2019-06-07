@@ -1,15 +1,17 @@
 package utils;
 
+import javafx.util.Duration;
+
 /**
  * Created by BouzalmatAbderrahman on 6/6/2019
  */
 public class GlobalVars {
     //window size
     public static final int WINDOW_WIDTH = 892;
-    public static final int WINDOW_HEIGHT = 458;
+    public static final int WINDOW_HEIGHT = 611;
 
     //boat positions
-    public static final int BOAT_AVAL_XPOSITION = 0;
+    public static final int BOAT_AVAL_XPOSITION = 287;
     public static final int BOAT_MIN_YPOSITION = 290;
     public static final int BOAT_AMONT_XPOSITION = 720;
     public static final int BOAT_MAX_YPOSITION = 210;
@@ -36,8 +38,11 @@ public class GlobalVars {
 
 
     // sens de parcours de l'écluse
-    public static final short AVAL_TO_AMONT = 1;
-    public static final short AMONT_TO_AVAL = -1;
+    public static final short AVAL_TO_AMONT_DIRECTION = 1;
+    public static final short AMONT_TO_AVAL_DIRECTION = -1;
+
+    // movement duration
+    public static final Duration duration = Duration.millis(1700);
 
 
 

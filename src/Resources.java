@@ -17,6 +17,8 @@ public class Resources {
     Image firstValveImage;
     Image secondValveImage;
     Image sasImage;
+    Image controlBackgroundImage;
+
     ImageView backgroundView;
     ImageView boatView;
     ImageView firstDoorView;
@@ -24,6 +26,7 @@ public class Resources {
     ImageView firstValveView;
     ImageView secondValveView;
     ImageView sasView;
+    ImageView controlBackgroundView;
 
     Boat boat;
     Sas sas;
@@ -39,10 +42,12 @@ public class Resources {
 
             backgroundImage = new Image(Resources.class.getResourceAsStream("res/background.png"));
 
-            if (sens == GlobalVars.AVAL_TO_AMONT)
+            controlBackgroundImage = new Image(Resources.class.getResourceAsStream("res/controlBackground.png"));
+
+            if (sens == GlobalVars.AVAL_TO_AMONT_DIRECTION)
                 boatImage = new Image(Resources.class.getResourceAsStream("res/boat_aval.gif"));
 
-            if(sens == GlobalVars.AMONT_TO_AVAL)
+            if(sens == GlobalVars.AMONT_TO_AVAL_DIRECTION)
                 boatImage = new Image(Resources.class.getResourceAsStream("res/boat_amant.gif"));
 
             firstDoorImage = new Image(Resources.class.getResourceAsStream("res/door.png"));
@@ -70,8 +75,11 @@ public class Resources {
             //
             backgroundView = new ImageView(backgroundImage);
 
+            controlBackgroundView = new ImageView(controlBackgroundImage);
+            controlBackgroundView.setTranslateY(458);
+
             //
-            if(sens == GlobalVars.AVAL_TO_AMONT){
+            if(sens == GlobalVars.AVAL_TO_AMONT_DIRECTION){
                 boatView = new ImageView(boatImage);
                 boatView.setTranslateX(GlobalVars.BOAT_AVAL_XPOSITION);
                 boatView.setTranslateY(GlobalVars.BOAT_MIN_YPOSITION);
@@ -81,8 +89,9 @@ public class Resources {
                 sasView.setTranslateX(GlobalVars.SAS_XPOSITION);
                 sasView.setTranslateY(GlobalVars.SAS_MAX_YPOSITION);
                 sas = new Sas(sasView);
+                sas.close();
             }
-            else if(sens == GlobalVars.AMONT_TO_AVAL){
+            else if(sens == GlobalVars.AMONT_TO_AVAL_DIRECTION){
                 boatView = new ImageView(boatImage);
                 boatView.setTranslateX(GlobalVars.BOAT_AMONT_XPOSITION);
                 boatView.setTranslateY(GlobalVars.BOAT_MAX_YPOSITION);
@@ -92,6 +101,7 @@ public class Resources {
                 sasView.setTranslateX(GlobalVars.SAS_XPOSITION);
                 sasView.setTranslateY(GlobalVars.SAS_MIN_YPOSITION);
                 sas = new Sas(sasView);
+                sas.open();
 
             }
 
@@ -100,7 +110,7 @@ public class Resources {
             //
             firstDoorView = new ImageView(firstDoorImage);
             firstDoorView.setTranslateX(GlobalVars.FIRST_DOOR_XPOSITION);
-            firstDoorView.setTranslateY(GlobalVars.DOOR_MAX_YPOSITION);
+            firstDoorView.setTranslateY(GlobalVars.DOOR_MIN_YPOSITION);
             firstDoor = new Door(firstDoorView);
 
             //

@@ -19,6 +19,7 @@ public class Ecluse extends Application {
     BorderPane root;
     Scene scene;
     Pane center;
+    Pane controlPane;
     Resources res;
     int sens = 1;
 
@@ -26,6 +27,7 @@ public class Ecluse extends Application {
     public void start(Stage primaryStage) throws Exception {
         root = new BorderPane();
         center = new Pane();
+        controlPane = new Pane();
         scene = new Scene(root, GlobalVars.WINDOW_WIDTH, GlobalVars.WINDOW_HEIGHT);
 
 
@@ -86,16 +88,27 @@ public class Ecluse extends Application {
     }
 
     public void initWorld() {
-        addObjects(res.backgroundView, res.boatView, res.firstDoorView, res.secondDoorView, res.sasView, res.firstValveView, res.secondValveView);
+        addObjects(res.backgroundView, res.boatView, res.firstDoorView, res.secondDoorView, res.sasView, res.firstValveView, res.secondValveView,res.controlBackgroundView);
     }
+
+   /* public void initConrolPanel(){
+        addControls(res.controlBackgroundView);
+    }*/
 
     private void addObjects(Node... n) {
         center.getChildren().addAll(n);
     }
-
     private void addObjects(Node n) {
         center.getChildren().add(0, n);
     }
+
+
+    /*private void addControls(Node... n) {
+        controlPane.getChildren().addAll(n);
+    }
+    private void addControls(Node n) {
+        controlPane.getChildren().add(0, n);
+    }*/
 
 
     public static void main(String[] args) {
