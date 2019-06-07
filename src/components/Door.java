@@ -1,7 +1,10 @@
 package components;
 
 
+import javafx.animation.TranslateTransition;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
+import utils.GlobalVars;
 
 /**
  * Created by BouzalmatAbderrahman on 6/6/2019

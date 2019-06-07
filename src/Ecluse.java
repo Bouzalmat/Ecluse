@@ -30,14 +30,21 @@ public class Ecluse extends Application {
 
 
         MenuBar menubar = new MenuBar(); //creating MenuBar
-        Menu Direction = new Menu(Strings.DIRECTION_MENU); //creating Menu
-        //creating Menu Item
+        //creating Menu
+        Menu direction = new Menu(Strings.DIRECTION_MENU);
+        Menu mode = new Menu(Strings.MODE_MENU);
+        //creating Menus Items
         MenuItem avalToAmantItem = new MenuItem(Strings.DIRECTION_ITEM1);
         MenuItem amantToAvalItem = new MenuItem(Strings.DIRECTION_ITEM2);
+        MenuItem manualMode = new MenuItem(Strings.MODE_ITEM2);
+        MenuItem autoMode = new MenuItem(Strings.MODE_ITEM1);
 
+        //adding Menu Items to the Menu
+        direction.getItems().addAll(avalToAmantItem, amantToAvalItem);
+        mode.getItems().addAll(manualMode, autoMode);
 
-        Direction.getItems().addAll(avalToAmantItem, amantToAvalItem);//adding Menu Items to the Menu
-        menubar.getMenus().add(Direction); //adding Menu to the MenuBar
+        //adding Menu to the MenuBar
+        menubar.getMenus().addAll(direction, mode);
 
         // actions events
         EventHandler<ActionEvent> avalToAmantEvent = new EventHandler<ActionEvent>() {
