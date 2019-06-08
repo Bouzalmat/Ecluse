@@ -25,7 +25,7 @@ public class Sas extends Objects {
         translateTransition.setByY(GlobalVars.SAS_MAX_YPOSITION - GlobalVars.SAS_MIN_YPOSITION);
         translateTransition.setDuration(GlobalVars.duration);
         translateTransition.play();
-        this.setState(State.OPENING);
+        this.setState(State.OPEN);
     }
 
     @Override
@@ -35,6 +35,6 @@ public class Sas extends Objects {
             translateTransition.setByY(GlobalVars.SAS_MIN_YPOSITION - GlobalVars.SAS_MAX_YPOSITION);
             translateTransition.setDuration(GlobalVars.duration);
             translateTransition.play();
-            this.setState(State.CLOSING);
+            this.setState(State.CLOSE);
     }
 }

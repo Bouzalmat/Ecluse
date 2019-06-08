@@ -1,7 +1,7 @@
+import components.State;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -19,16 +19,14 @@ public class Ecluse extends Application {
     Scene scene;
     Pane center;
     BorderPane controlPane;
-    GridPane buttonsAvalPane;
     GridPane buttonsAmontPane;
-    Resources res;
+    public static Resources res;
     int sens = 1;
+    public static int sasLevel = GlobalVars.SAS_MAX_YPOSITION;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         root = new BorderPane();
-        center = new Pane();
-        controlPane = new BorderPane();
         scene = new Scene(root, GlobalVars.WINDOW_WIDTH, GlobalVars.WINDOW_HEIGHT);
 
         //creating MenuBar
@@ -54,16 +52,20 @@ public class Ecluse extends Application {
             public void handle(ActionEvent e)
             {
                 sens = -1;
+                sasLevel = GlobalVars.SAS_MIN_YPOSITION;
                 initResourses(sens);
-                initWorld();
+                root.setCenter(initCenterPane());
+                System.out.println(sasLevel);
             }
         };
         EventHandler<ActionEvent> amantToAvalEvent = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e)
             {
                 sens = 1;
+                sasLevel = GlobalVars.SAS_MAX_YPOSITION;
                 initResourses(sens);
-                initWorld();
+                root.setCenter(initCenterPane());
+                System.out.println(sasLevel);
             }
         };
 
@@ -71,80 +73,13 @@ public class Ecluse extends Application {
         avalToAmantItem.setOnAction(avalToAmantEvent);
         amantToAvalItem.setOnAction(amantToAvalEvent);
 
-
-        // Initialize AvalPane
-        buttonsAvalPane = new GridPane();
-        buttonsAvalPane.setHgap(10);
-        buttonsAvalPane.setVgap(10);
-
-        // Initialize AmontPane
-        buttonsAmontPane = new GridPane();
-        buttonsAmontPane.setHgap(10);
-        buttonsAmontPane.setVgap(10);
-
-        //AvalPane labels
-        Label avalLabel = new Label("Aval");
-        Label lightLabel = new Label("Feu");
-        Label doorLabel = new Label("Porte");
-        Label valveLabel = new Label("Vanne");
-
-        //AmontPane labels
-        Label amontLabel = new Label("Amont");
-        Label amontLightLabel = new Label("Feu");
-        Label amontDoorLabel = new Label("Porte");
-        Label amontValveLabel = new Label("Vanne");
-
-        // AvalPane buttons
-        Button openFirstAvalValve = new Button("Ouvrir");
-        Button closeFirstAvalValve = new Button("Fermer");
-        Button openFirstAvalDoor = new Button("Ouvrir");
-        Button closeFirstAvalDoor = new Button("Fermer");
-        Button lightAvalOn = new Button("Allumer");
-        Button lightAvalOff = new Button("Eteindre");
-
-        // AmontPane buttons
-        Button openFirstAmontValve = new Button("Ouvrir");
-        Button closeFirstAmontValve = new Button("Fermer");
-        Button openFirstAmontDoor = new Button("Ouvrir");
-        Button closeFirstAmontDoor = new Button("Fermer");
-        Button lightAmontOn = new Button("Allumer");
-        Button lightAmontOff = new Button("Eteindre");
-
-        // Add labels and buttons to AvalPane
-        buttonsAvalPane.add(avalLabel,1,1);
-        buttonsAvalPane.add(valveLabel,1,2);
-        buttonsAvalPane.add(doorLabel,1,3);
-        buttonsAvalPane.add(lightLabel,1,4);
-        buttonsAvalPane.add(openFirstAvalValve,2,2);
-        buttonsAvalPane.add(closeFirstAvalValve,3,2);
-        buttonsAvalPane.add(openFirstAvalDoor,2,3);
-        buttonsAvalPane.add(closeFirstAvalDoor,3,3);
-        buttonsAvalPane.add(lightAvalOn,2,4);
-        buttonsAvalPane.add(lightAvalOff,3,4);
-
-        // Add labels and buttons to AmontPane
-        buttonsAmontPane.add(amontLabel,1,1);
-        buttonsAmontPane.add(amontLightLabel,1,2);
-        buttonsAmontPane.add(amontDoorLabel,1,3);
-        buttonsAmontPane.add(amontValveLabel,1,4);
-        buttonsAmontPane.add(openFirstAmontValve,2,2);
-        buttonsAmontPane.add(closeFirstAmontValve,3,2);
-        buttonsAmontPane.add(openFirstAmontDoor,2,3);
-        buttonsAmontPane.add(closeFirstAmontDoor,3,3);
-        buttonsAmontPane.add(lightAmontOn,2,4);
-        buttonsAmontPane.add(lightAmontOff,3,4);
-
-
+        initResourses(sens);
         root.setTop(menubar);
-        root.setCenter(center);
-        root.setBottom(controlPane);
+        root.setCenter(initCenterPane());
+        root.setBottom(initConrolPanel());
 
         primaryStage.setScene(scene);
         primaryStage.show();
-
-        initResourses(sens);
-        initConrolPanel();
-        initWorld();
     }
 
 
@@ -156,32 +91,242 @@ public class Ecluse extends Application {
         res = new Resources();
         res.loadResourses(sens);
     }
+
+
     // Render center pane
-    public void initWorld() {
-        addObjects(res.backgroundView, res.boatView, res.firstDoorView, res.secondDoorView, res.sasView, res.firstValveView, res.secondValveView);
+    public Pane initCenterPane() {
+        center = new Pane();
+        center.getChildren().addAll(res.backgroundView, res.boatView, res.firstDoorView, res.secondDoorView, res.sasView, res.firstValveView, res.secondValveView);
+        return  center;
     }
+
+
     // Render control pane
-    public void initConrolPanel(){
+    public BorderPane initConrolPanel(){
+        controlPane = new BorderPane();
        // controlPane.setCenter(res.controlBackgroundView);
-        controlPane.setLeft(buttonsAvalPane);
-        controlPane.setRight(buttonsAmontPane);
+        controlPane.setLeft(avalButtonsBuilder());
+        controlPane.setRight(amontButtonsBuilder());
+        return controlPane;
+    }
+    public GridPane avalButtonsBuilder(){
+        GridPane buttonsAvalPane = new GridPane();
+        buttonsAvalPane.setHgap(10);
+        buttonsAvalPane.setVgap(10);
+
+        Label avalLabel = new Label("Aval");
+        Label lightLabel = new Label("Feu");
+        Label doorLabel = new Label("Porte");
+        Label valveLabel = new Label("Vanne");
+
+        Button openFirstValve = new Button("Ouvrir");
+        Button closeFirstValve = new Button("Fermer");
+        Button openFirstAvalDoor = new Button("Ouvrir");
+        Button closeFirstAvalDoor = new Button("Fermer");
+        Button lightAvalOn = new Button("Allumer");
+        Button lightAvalOff = new Button("Eteindre");
+
+        openFirstAvalDoor.setOnAction(openFirstDoor());
+        closeFirstAvalDoor.setOnAction(closeFirstDoor());
+        openFirstValve.setOnAction(openFirstValve());
+        closeFirstValve.setOnAction(closeFirstValve());
+
+
+        buttonsAvalPane.add(avalLabel,1,1);
+        buttonsAvalPane.add(valveLabel,1,2);
+        buttonsAvalPane.add(doorLabel,1,3);
+        buttonsAvalPane.add(lightLabel,1,4);
+        buttonsAvalPane.add(openFirstValve,2,2);
+        buttonsAvalPane.add(closeFirstValve,3,2);
+        buttonsAvalPane.add(openFirstAvalDoor,2,3);
+        buttonsAvalPane.add(closeFirstAvalDoor,3,3);
+        buttonsAvalPane.add(lightAvalOn,2,4);
+        buttonsAvalPane.add(lightAvalOff,3,4);
+
+        return buttonsAvalPane ;
     }
 
-    //Center pane methods
-    private void addObjects(Node... n) {
-        center.getChildren().addAll(n);
-    }
-    private void addObjects(Node n) {
-        center.getChildren().add(0, n);
+    public EventHandler<ActionEvent> openFirstDoor(){
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(res.firstDoor.getState() == State.CLOSE && sasLevel == GlobalVars.SAS_MIN_YPOSITION && res.firstValve.getState() == State.CLOSE) {
+                    res.firstDoor.open();
+                    System.out.println(res.firstDoor.getState());
+                    res.firstDoor.setState(State.OPEN);
+                    System.out.println(res.firstDoor.getState());
+                }
+                else
+                    System.out.println("Action non autorisée");
+            }
+        };
+        return  event;
     }
 
-    //Control pane methods
-    private void addControls(Node... n) {
-        controlPane.getChildren().addAll(n);
+    public EventHandler<ActionEvent> closeFirstDoor(){
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if( res.firstDoor.getState()  == State.OPEN){
+                        res.firstDoor.close();
+                        res.firstDoor.setState(State.CLOSE);
+                }
+                else {
+                    System.out.println("Action non autorisée");
+                }
+            }
+        };
+        return  event;
     }
-    private void addControls(Node n) {
-        controlPane.getChildren().add(0, n);
+
+    public EventHandler<ActionEvent> openFirstValve(){
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(sasLevel == GlobalVars.SAS_MAX_YPOSITION && res.firstValve.getState() == State.CLOSE && res.secondValve.getState() == State.CLOSE){
+                   // res.firstValve.open(); à developper
+                    res.sas.close();
+                    sasLevel = GlobalVars.SAS_MIN_YPOSITION;
+                    res.firstValve.setState(State.OPEN);
+                }
+                else {
+                    System.out.println("Action non autorisée");
+                }
+            }
+        };
+        return event;
     }
+
+    public EventHandler<ActionEvent> closeFirstValve(){
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(res.firstValve.getState() == State.OPEN){
+                    // res.firstValve.close();
+                    res.firstValve.setState(State.CLOSE);
+                }
+            }
+        };
+        return event;
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public GridPane amontButtonsBuilder(){
+        // Initialize AmontPane
+        buttonsAmontPane = new GridPane();
+        buttonsAmontPane.setHgap(10);
+        buttonsAmontPane.setVgap(10);
+
+        //AmontPane labels
+        Label amontLabel = new Label("Amont");
+        Label amontLightLabel = new Label("Feu");
+        Label amontDoorLabel = new Label("Porte");
+        Label amontValveLabel = new Label("Vanne");
+
+
+        // AmontPane buttons
+        Button openSecondValve = new Button("Ouvrir");
+        Button closeSecondValve = new Button("Fermer");
+        Button openSecondDoor = new Button("Ouvrir");
+        Button closeSecondDoor = new Button("Fermer");
+        Button lightAmontOn = new Button("Allumer");
+        Button lightAmontOff = new Button("Eteindre");
+
+
+        // Add labels and buttons to AmontPane
+        buttonsAmontPane.add(amontLabel,1,1);
+        buttonsAmontPane.add(amontValveLabel,1,2);
+        buttonsAmontPane.add(amontDoorLabel,1,3);
+        buttonsAmontPane.add(amontLightLabel,1,4);
+        buttonsAmontPane.add(openSecondValve,2,2);
+        buttonsAmontPane.add(closeSecondValve,3,2);
+        buttonsAmontPane.add(openSecondDoor,2,3);
+        buttonsAmontPane.add(closeSecondDoor,3,3);
+        buttonsAmontPane.add(lightAmontOn,2,4);
+        buttonsAmontPane.add(lightAmontOff,3,4);
+
+        openSecondDoor.setOnAction(openSecondDoor());
+        closeSecondDoor.setOnAction(closeSecondDoor());
+        openSecondValve.setOnAction(openSecondValve());
+        closeSecondValve.setOnAction(closeSecondValve());
+
+        return buttonsAmontPane;
+    }
+
+    public EventHandler<ActionEvent> openSecondDoor(){
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(res.secondDoor.getState() == State.CLOSE && sasLevel == GlobalVars.SAS_MAX_YPOSITION) {
+                    res.secondDoor.open();
+                    System.out.println(res.secondDoor.getState());
+                    res.secondDoor.setState(State.OPEN);
+                    System.out.println(res.secondDoor.getState());
+                }
+                else {
+                    System.out.println("Action non autorisée");
+                }
+            }
+        };
+        return  event;
+    }
+
+    public EventHandler<ActionEvent> closeSecondDoor(){
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if( res.secondDoor.getState()  == State.OPEN){
+                    res.secondDoor.close();
+                    res.secondDoor.setState(State.CLOSE);
+                }
+            }
+        };
+        return  event;
+    }
+
+    public EventHandler<ActionEvent> openSecondValve(){
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(sasLevel == GlobalVars.SAS_MIN_YPOSITION && res.secondValve.getState() == State.CLOSE){
+                    // res.firstValve.open();
+                    res.sas.open();
+                    sasLevel = GlobalVars.SAS_MAX_YPOSITION;
+                    res.secondValve.setState(State.OPEN);
+                }
+                else {
+                    System.out.println("Action non autorisée");
+                }
+            }
+        };
+        return event;
+    }
+
+    public EventHandler<ActionEvent> closeSecondValve(){
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(sasLevel == GlobalVars.SAS_MAX_YPOSITION && res.secondValve.getState() == State.OPEN){
+                    // res.secondValve.close();
+                    res.secondValve.setState(State.CLOSE);
+                }
+            }
+        };
+        return event;
+    }
+
+
+
+
 
 
     public static void main(String[] args) {

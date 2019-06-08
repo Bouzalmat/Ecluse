@@ -27,6 +27,5 @@ public  class Valve extends Objects {
 
     @Override
     public void close() {
-
     }
 }

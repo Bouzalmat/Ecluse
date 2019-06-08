@@ -2,6 +2,8 @@ package components;
 
 
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import utils.GlobalVars;
 
@@ -20,21 +22,31 @@ public class Door extends Objects {
 
     @Override
     public void open() {
-        translateTransition = new TranslateTransition();
-        translateTransition.setNode(getImage());
-        translateTransition.setByY(GlobalVars.DOOR_MAX_YPOSITION - GlobalVars.DOOR_MIN_YPOSITION);
-        translateTransition.setDuration(GlobalVars.duration);
-        translateTransition.play();
-        this.setState(State.OPENING);
+            this.setState(State.OPENING);
+            translateTransition = new TranslateTransition();
+            translateTransition.setNode(getImage());
+            translateTransition.setByY(GlobalVars.DOOR_MAX_YPOSITION - GlobalVars.DOOR_MIN_YPOSITION);
+            translateTransition.setDuration(GlobalVars.duration);
+            translateTransition.play();
     }
 
     @Override
     public void close() {
-        translateTransition = new TranslateTransition();
-        translateTransition.setNode(getImage());
-        translateTransition.setByY(GlobalVars.DOOR_MIN_YPOSITION - GlobalVars.DOOR_MAX_YPOSITION);
-        translateTransition.setDuration(GlobalVars.duration);
-        translateTransition.play();
-        this.setState(State.CLOSING);
+            this.setState(State.CLOSING);
+            if(this.getState() != State.OPENING ) {
+
+                translateTransition = new TranslateTransition();
+                translateTransition.setNode(getImage());
+                translateTransition.setByY(GlobalVars.DOOR_MIN_YPOSITION - GlobalVars.DOOR_MAX_YPOSITION);
+                translateTransition.setDuration(GlobalVars.duration);
+                translateTransition.play();
+                translateTransition.setOnFinished(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+
+                    }
+                });
+
+            }
     }
 }

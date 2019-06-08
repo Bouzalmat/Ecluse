@@ -84,7 +84,7 @@ public class Resources {
             //
             if(sens == GlobalVars.AVAL_TO_AMONT_DIRECTION){
                 boatView = new ImageView(boatImage);
-                boatView.setTranslateX(GlobalVars.BOAT_LEVEL2_XPOSITION);
+                boatView.setTranslateX(GlobalVars.BOAT_LEVEL1_MIN_XPOSITION);
                 boatView.setTranslateY(GlobalVars.BOAT_MIN_YPOSITION);
                 boat = new Boat(boatView);
 
