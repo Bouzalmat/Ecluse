@@ -184,7 +184,7 @@ public class Ecluse extends Application {
             @Override
             public void handle(ActionEvent event) {
                 if(sasLevel == GlobalVars.SAS_MAX_YPOSITION && res.firstValve.getState() == State.CLOSE && res.secondValve.getState() == State.CLOSE){
-                   // res.firstValve.open(); à developper
+                    res.firstValve.open();
                     res.sas.close();
                     sasLevel = GlobalVars.SAS_MIN_YPOSITION;
                     res.firstValve.setState(State.OPEN);
