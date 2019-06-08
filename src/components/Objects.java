@@ -17,6 +17,7 @@ public abstract class Objects {
     public Objects(ImageView image) {
         this.image = image;
     }
+    public Objects(){};
 
     abstract public void open();
     abstract public void close();

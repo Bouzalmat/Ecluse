@@ -1,10 +1,10 @@
-import components.Boat;
-import components.Door;
-import components.Sas;
-import components.Valve;
+package main;
+
+import components.*;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import res.Res;
 import utils.GlobalVars;
 
 /**
@@ -20,14 +20,14 @@ public class Resources {
     Image sasImage;
     Image controlBackgroundImage;
 
-    ImageView backgroundView;
-    ImageView boatView;
-    ImageView firstDoorView;
-    ImageView secondDoorView;
-    ImageView firstValveView;
-    ImageView secondValveView;
-    ImageView sasView;
-    ImageView controlBackgroundView;
+   public ImageView backgroundView;
+    public ImageView boatView;
+    public ImageView firstDoorView;
+    public ImageView secondDoorView;
+    public ImageView firstValveView;
+    public ImageView secondValveView;
+    public ImageView sasView;
+    public ImageView controlBackgroundView;
 
     Boat boat;
     Sas sas;
@@ -35,6 +35,8 @@ public class Resources {
     Door secondDoor;
     Valve firstValve;
     Valve secondValve;
+    Light firstLight;
+    Light secondLight;
 
     Button b;
 
@@ -43,26 +45,26 @@ public class Resources {
         try {
 
 
-            backgroundImage = new Image(Resources.class.getResourceAsStream("res/background.png"));
+            backgroundImage = new Image(Res.class.getResourceAsStream("background.png"));
 
-            controlBackgroundImage = new Image(Resources.class.getResourceAsStream("res/controlBackground.png"));
+            controlBackgroundImage = new Image(Res.class.getResourceAsStream("controlBackground.png"));
 
             if (sens == GlobalVars.AVAL_TO_AMONT_DIRECTION)
-                boatImage = new Image(Resources.class.getResourceAsStream("res/boat_aval.gif"));
+                boatImage = new Image(Res.class.getResourceAsStream("boat_aval.gif"));
 
             if(sens == GlobalVars.AMONT_TO_AVAL_DIRECTION)
-                boatImage = new Image(Resources.class.getResourceAsStream("res/boat_amant.gif"));
+                boatImage = new Image(Res.class.getResourceAsStream("boat_amant.gif"));
 
-            firstDoorImage = new Image(Resources.class.getResourceAsStream("res/door.png"));
-            secondDoorImage = new Image(Resources.class.getResourceAsStream("res/door.png"));
+            firstDoorImage = new Image(Res.class.getResourceAsStream("door.png"));
+            secondDoorImage = new Image(Res.class.getResourceAsStream("door.png"));
 
-            firstValveImage = new Image(Resources.class.getResourceAsStream("res/open_valve.png"));
-            firstValveImage = new Image(Resources.class.getResourceAsStream("res/open_valve.png"));
+            firstValveImage = new Image(Res.class.getResourceAsStream("open_valve.png"));
+            firstValveImage = new Image(Res.class.getResourceAsStream("open_valve.png"));
 
-            secondValveImage = new Image(Resources.class.getResourceAsStream("res/open_valve.png"));
-            secondValveImage = new Image(Resources.class.getResourceAsStream("res/open_valve.png"));
+            secondValveImage = new Image(Res.class.getResourceAsStream("open_valve.png"));
+            secondValveImage = new Image(Res.class.getResourceAsStream("open_valve.png"));
 
-            sasImage = new Image(Resources.class.getResourceAsStream("res/sas.png"));
+            sasImage = new Image(Res.class.getResourceAsStream("sas.png"));
 
             // attaching
             attachDefaultImages(sens);
@@ -133,8 +135,8 @@ public class Resources {
 
             //
 
-
-            b = new Button("button");
+            firstLight = new Light();
+            secondLight = new Light();
 
         } catch (Exception e) {
             System.out.println("error attaching imgs");

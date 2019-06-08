@@ -3,6 +3,7 @@ package components;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import main.Resources;
 import res.Res;
 import utils.GlobalVars;
 
@@ -26,6 +27,24 @@ public  class Valve extends Objects {
         this.setImage(image);
     }
 
+    public void openFirstValve(Resources res){
+        Image image = new Image(Res.class.getResourceAsStream("closed_valve.png"));
+        res.firstValveView.setImage(image);
+    }
+    public void closeFirstValve(Resources res){
+        Image image = new Image(Res.class.getResourceAsStream("open_valve.png"));
+        res.firstValveView.setImage(image);
+    }
+
+    public void openSecondValve(Resources res){
+        Image image = new Image(Res.class.getResourceAsStream("closed_valve.png"));
+        res.secondValveView.setImage(image);
+    }
+
+    public void closeSecondValve(Resources res){
+        Image image = new Image(Res.class.getResourceAsStream("open_valve.png"));
+        res.secondValveView.setImage(image);
+    }
 
     @Override
     public void close() {

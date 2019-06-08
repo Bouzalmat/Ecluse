@@ -1,6 +1,9 @@
+package main;
+
 import components.State;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -22,6 +25,7 @@ public class Ecluse extends Application {
     GridPane buttonsAmontPane;
     public static Resources res;
     int sens = 1;
+    int level = 1;
     public static int sasLevel = GlobalVars.SAS_MAX_YPOSITION;
 
     @Override
@@ -80,6 +84,7 @@ public class Ecluse extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 
 
@@ -123,13 +128,16 @@ public class Ecluse extends Application {
         Button closeFirstValve = new Button("Fermer");
         Button openFirstAvalDoor = new Button("Ouvrir");
         Button closeFirstAvalDoor = new Button("Fermer");
-        Button lightAvalOn = new Button("Allumer");
-        Button lightAvalOff = new Button("Eteindre");
+        Button firstLightOn = new Button("Allumer");
+        Button firstLightOff = new Button("Eteindre");
 
         openFirstAvalDoor.setOnAction(openFirstDoor());
         closeFirstAvalDoor.setOnAction(closeFirstDoor());
         openFirstValve.setOnAction(openFirstValve());
         closeFirstValve.setOnAction(closeFirstValve());
+        firstLightOn.setOnAction(firstLightOn());
+        firstLightOff.setOnAction(firstLightOff());
+
 
 
         buttonsAvalPane.add(avalLabel,1,1);
@@ -140,8 +148,8 @@ public class Ecluse extends Application {
         buttonsAvalPane.add(closeFirstValve,3,2);
         buttonsAvalPane.add(openFirstAvalDoor,2,3);
         buttonsAvalPane.add(closeFirstAvalDoor,3,3);
-        buttonsAvalPane.add(lightAvalOn,2,4);
-        buttonsAvalPane.add(lightAvalOff,3,4);
+        buttonsAvalPane.add(firstLightOn,2,4);
+        buttonsAvalPane.add(firstLightOff,3,4);
 
         return buttonsAvalPane ;
     }
@@ -167,7 +175,7 @@ public class Ecluse extends Application {
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if( res.firstDoor.getState()  == State.OPEN){
+                if( res.firstDoor.getState()  == State.OPEN && res.firstLight.getState() == State.CLOSE){
                         res.firstDoor.close();
                         res.firstDoor.setState(State.CLOSE);
                 }
@@ -183,8 +191,8 @@ public class Ecluse extends Application {
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(sasLevel == GlobalVars.SAS_MAX_YPOSITION && res.firstValve.getState() == State.CLOSE && res.secondValve.getState() == State.CLOSE){
-                    res.firstValve.open();
+                if(sasLevel == GlobalVars.SAS_MAX_YPOSITION && res.firstValve.getState() == State.CLOSE && res.secondValve.getState() == State.CLOSE && res.firstDoor.getState() == State.CLOSE && res.secondDoor.getState() == State.CLOSE){
+                    res.firstValve.openFirstValve(res);
                     res.sas.close();
                     sasLevel = GlobalVars.SAS_MIN_YPOSITION;
                     res.firstValve.setState(State.OPEN);
@@ -202,8 +210,41 @@ public class Ecluse extends Application {
             @Override
             public void handle(ActionEvent event) {
                 if(res.firstValve.getState() == State.OPEN){
-                    // res.firstValve.close();
+                    res.firstValve.closeFirstValve(res);
                     res.firstValve.setState(State.CLOSE);
+                }
+            }
+        };
+        return event;
+    }
+
+    public EventHandler<ActionEvent> firstLightOn(){
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(res.firstLight.getState() == State.CLOSE && res.firstDoor.getState() == State.OPEN){
+                    res.firstLight.setState(State.OPEN);
+                    System.out.println("Feu 1 allumé");
+                   // res.boat.moveX(sens,level);
+                }
+                else {
+                    System.out.println("Action non autorisée");
+                }
+            }
+        };
+        return event;
+    }
+
+    public EventHandler<ActionEvent> firstLightOff(){
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if( res.firstLight.getState() == State.OPEN){
+                    res.firstLight.setState(State.CLOSE);
+                    System.out.println("Feu attient");
+                }
+                else {
+                    System.out.println("Action non autorisée");
                 }
             }
         };
@@ -238,8 +279,8 @@ public class Ecluse extends Application {
         Button closeSecondValve = new Button("Fermer");
         Button openSecondDoor = new Button("Ouvrir");
         Button closeSecondDoor = new Button("Fermer");
-        Button lightAmontOn = new Button("Allumer");
-        Button lightAmontOff = new Button("Eteindre");
+        Button secondLightOn = new Button("Allumer");
+        Button secondLightOff = new Button("Eteindre");
 
 
         // Add labels and buttons to AmontPane
@@ -251,13 +292,16 @@ public class Ecluse extends Application {
         buttonsAmontPane.add(closeSecondValve,3,2);
         buttonsAmontPane.add(openSecondDoor,2,3);
         buttonsAmontPane.add(closeSecondDoor,3,3);
-        buttonsAmontPane.add(lightAmontOn,2,4);
-        buttonsAmontPane.add(lightAmontOff,3,4);
+        buttonsAmontPane.add(secondLightOn,2,4);
+        buttonsAmontPane.add(secondLightOff,3,4);
 
         openSecondDoor.setOnAction(openSecondDoor());
         closeSecondDoor.setOnAction(closeSecondDoor());
         openSecondValve.setOnAction(openSecondValve());
         closeSecondValve.setOnAction(closeSecondValve());
+        secondLightOn.setOnAction(secondLightOn());
+        secondLightOff.setOnAction(secondLightOff());
+
 
         return buttonsAmontPane;
     }
@@ -266,7 +310,7 @@ public class Ecluse extends Application {
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(res.secondDoor.getState() == State.CLOSE && sasLevel == GlobalVars.SAS_MAX_YPOSITION) {
+                if(res.secondDoor.getState() == State.CLOSE && sasLevel == GlobalVars.SAS_MAX_YPOSITION && res.secondValve.getState() == State.CLOSE) {
                     res.secondDoor.open();
                     System.out.println(res.secondDoor.getState());
                     res.secondDoor.setState(State.OPEN);
@@ -284,7 +328,7 @@ public class Ecluse extends Application {
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if( res.secondDoor.getState()  == State.OPEN){
+                if( res.secondDoor.getState()  == State.OPEN && res.secondLight.getState() == State.CLOSE){
                     res.secondDoor.close();
                     res.secondDoor.setState(State.CLOSE);
                 }
@@ -297,8 +341,8 @@ public class Ecluse extends Application {
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(sasLevel == GlobalVars.SAS_MIN_YPOSITION && res.secondValve.getState() == State.CLOSE){
-                    // res.firstValve.open();
+                if(sasLevel == GlobalVars.SAS_MIN_YPOSITION && res.secondValve.getState() == State.CLOSE && res.firstDoor.getState() == State.CLOSE && res.secondDoor.getState() == State.CLOSE && res.firstDoor.getState() == State.CLOSE && res.firstValve.getState() == State.CLOSE){
+                    res.firstValve.openSecondValve(res);
                     res.sas.open();
                     sasLevel = GlobalVars.SAS_MAX_YPOSITION;
                     res.secondValve.setState(State.OPEN);
@@ -316,8 +360,40 @@ public class Ecluse extends Application {
             @Override
             public void handle(ActionEvent event) {
                 if(sasLevel == GlobalVars.SAS_MAX_YPOSITION && res.secondValve.getState() == State.OPEN){
-                    // res.secondValve.close();
+                    res.firstValve.closeSecondValve(res);
                     res.secondValve.setState(State.CLOSE);
+                }
+            }
+        };
+        return event;
+    }
+
+    public EventHandler<ActionEvent> secondLightOn(){
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(res.secondLight.getState() == State.CLOSE && res.secondDoor.getState() == State.OPEN){
+                    res.secondLight.setState(State.OPEN);
+                    System.out.println("Feu allumé");
+                }
+                else {
+                    System.out.println("Action non autorisée");
+                }
+            }
+        };
+        return event;
+    }
+
+    public EventHandler<ActionEvent> secondLightOff(){
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if( res.secondLight.getState() == State.OPEN){
+                    res.secondLight.setState(State.CLOSE);
+                    System.out.println("Feu attient");
+                }
+                else {
+                    System.out.println("Action non autorisée");
                 }
             }
         };
