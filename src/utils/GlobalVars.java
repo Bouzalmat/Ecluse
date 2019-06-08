@@ -12,7 +12,7 @@ public class GlobalVars {
 
     //boat positions
     public static final int BOAT_LEVEL1_MIN_XPOSITION = 0;
-    public static final int BOAT_LEVEL1_MAX_XPOSITION = 240;
+    public static final int BOAT_LEVEL1_MAX_XPOSITION = 290;
     public static final int BOAT_LEVEL2_XPOSITION = 287;
     public static final int BOAT_LEVEL3_MIN_XPOSITION = 0;
     public static final int BOAT_LEVEL3_MAX_XPOSITION = 240;
@@ -47,6 +47,9 @@ public class GlobalVars {
 
     // movement duration
     public static final Duration duration = Duration.millis(1700);
+
+    //boat speed
+    public static final Duration boatDuration = Duration.millis(2200);
 
 
 
