@@ -3,7 +3,6 @@ package main;
 import components.State;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -56,6 +55,7 @@ public class Ecluse extends Application {
             public void handle(ActionEvent e)
             {
                 sens = -1;
+                level = 3;
                 sasLevel = GlobalVars.SAS_MIN_YPOSITION;
                 initResourses(sens);
                 root.setCenter(initCenterPane());
@@ -66,6 +66,7 @@ public class Ecluse extends Application {
             public void handle(ActionEvent e)
             {
                 sens = 1;
+                level = 1;
                 sasLevel = GlobalVars.SAS_MAX_YPOSITION;
                 initResourses(sens);
                 root.setCenter(initCenterPane());
@@ -196,6 +197,9 @@ public class Ecluse extends Application {
             public void handle(ActionEvent event) {
                 if(sasLevel == GlobalVars.SAS_MAX_YPOSITION && res.firstValve.getState() == State.CLOSE && res.secondValve.getState() == State.CLOSE && res.firstDoor.getState() == State.CLOSE && res.secondDoor.getState() == State.CLOSE){
                     res.firstValve.openFirstValve(res);
+                    if(level == 2){
+                        res.boat.moveY(sens); // a régler
+                    }
                     res.sas.close();
                     sasLevel = GlobalVars.SAS_MIN_YPOSITION;
                     res.firstValve.setState(State.OPEN);
@@ -229,7 +233,10 @@ public class Ecluse extends Application {
                     res.firstLight.setState(State.OPEN);
                     System.out.println("Feu 1 allumé");
                     res.boat.moveX(sens,level);
-                    level = 2;
+                    if(sens == 1)
+                     level = 2;
+                    else if (sens == -1)
+                      level = 1;
                 }
                 else {
                     System.out.println("Action non autorisée");
@@ -347,7 +354,9 @@ public class Ecluse extends Application {
             public void handle(ActionEvent event) {
                 if(sasLevel == GlobalVars.SAS_MIN_YPOSITION && res.secondValve.getState() == State.CLOSE && res.firstDoor.getState() == State.CLOSE && res.secondDoor.getState() == State.CLOSE && res.firstDoor.getState() == State.CLOSE && res.firstValve.getState() == State.CLOSE){
                     res.firstValve.openSecondValve(res);
-                    res.boat.moveY();
+                    if(level == 2){
+                        res.boat.moveY(sens);
+                    }
                     res.sas.open();
                     sasLevel = GlobalVars.SAS_MAX_YPOSITION;
                     res.secondValve.setState(State.OPEN);
@@ -381,7 +390,11 @@ public class Ecluse extends Application {
                     res.secondLight.setState(State.OPEN);
                     System.out.println("Feu allumé");
                     res.boat.moveX(sens,level);
-                    level = 1;
+                    if(sens == 1)
+                        level = 3;
+                    else if (sens == -1)
+                        level = 2;
+                    System.out.println(level);
                 }
                 else {
                     System.out.println("Action non autorisée");
