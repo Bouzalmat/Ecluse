@@ -23,8 +23,10 @@ public class Ecluse extends Application {
     BorderPane controlPane;
     GridPane buttonsAmontPane;
     public static Resources res;
-    int sens = 1;
-    int level = 1;
+
+    //Global vars for the default situation
+    public static int sens = 1;
+    public static int level = 1;
     public static int sasLevel = GlobalVars.SAS_MAX_YPOSITION;
 
     @Override
@@ -70,7 +72,6 @@ public class Ecluse extends Application {
                 sasLevel = GlobalVars.SAS_MAX_YPOSITION;
                 initResourses(sens);
                 root.setCenter(initCenterPane());
-                System.out.println(sasLevel);
             }
         };
 
@@ -85,10 +86,7 @@ public class Ecluse extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
-
-        //res.boat.moveY();
-        //res.sas.open();
-
+        
     }
 
 
@@ -198,7 +196,7 @@ public class Ecluse extends Application {
                 if(sasLevel == GlobalVars.SAS_MAX_YPOSITION && res.firstValve.getState() == State.CLOSE && res.secondValve.getState() == State.CLOSE && res.firstDoor.getState() == State.CLOSE && res.secondDoor.getState() == State.CLOSE){
                     res.firstValve.openFirstValve(res);
                     if(level == 2){
-                        res.boat.moveY(sens); // a régler
+                        res.boat.moveBoatY(GlobalVars.BOAT_MAX_YPOSITION, GlobalVars.BOAT_MIN_YPOSITION); // a régler
                     }
                     res.sas.close();
                     sasLevel = GlobalVars.SAS_MIN_YPOSITION;
@@ -232,11 +230,14 @@ public class Ecluse extends Application {
                 if(res.firstLight.getState() == State.CLOSE && res.firstDoor.getState() == State.OPEN){
                     res.firstLight.setState(State.OPEN);
                     System.out.println("Feu 1 allumé");
-                    res.boat.moveX(sens,level);
-                    if(sens == 1)
-                     level = 2;
-                    else if (sens == -1)
-                      level = 1;
+                    if(sens == 1 && level == 1){
+                        res.boat.moveBoatX(GlobalVars.BOAT_LEVEL1_MIN_XPOSITION, GlobalVars.BOAT_LEVEL1_MAX_XPOSITION);
+                        level = 2;
+                    }
+                    else if (sens == -1 && level == 2){
+                        res.boat.moveBoatX(GlobalVars.BOAT_LEVEL2_XPOSITION, GlobalVars.BOAT_LEVEL1_MIN_XPOSITION);
+                        level = 1;
+                    }
                 }
                 else {
                     System.out.println("Action non autorisée");
@@ -306,6 +307,7 @@ public class Ecluse extends Application {
         buttonsAmontPane.add(secondLightOn,2,4);
         buttonsAmontPane.add(secondLightOff,3,4);
 
+        //Add events to buttons
         openSecondDoor.setOnAction(openSecondDoor());
         closeSecondDoor.setOnAction(closeSecondDoor());
         openSecondValve.setOnAction(openSecondValve());
@@ -355,7 +357,7 @@ public class Ecluse extends Application {
                 if(sasLevel == GlobalVars.SAS_MIN_YPOSITION && res.secondValve.getState() == State.CLOSE && res.firstDoor.getState() == State.CLOSE && res.secondDoor.getState() == State.CLOSE && res.firstDoor.getState() == State.CLOSE && res.firstValve.getState() == State.CLOSE){
                     res.firstValve.openSecondValve(res);
                     if(level == 2){
-                        res.boat.moveY(sens);
+                        res.boat.moveBoatY(GlobalVars.BOAT_MIN_YPOSITION, GlobalVars.BOAT_MAX_YPOSITION);
                     }
                     res.sas.open();
                     sasLevel = GlobalVars.SAS_MAX_YPOSITION;
@@ -374,7 +376,7 @@ public class Ecluse extends Application {
             @Override
             public void handle(ActionEvent event) {
                 if(sasLevel == GlobalVars.SAS_MAX_YPOSITION && res.secondValve.getState() == State.OPEN){
-                    res.firstValve.closeSecondValve(res);
+                    res.secondValve.closeSecondValve(res);
                     res.secondValve.setState(State.CLOSE);
                 }
             }
@@ -389,12 +391,14 @@ public class Ecluse extends Application {
                 if(res.secondLight.getState() == State.CLOSE && res.secondDoor.getState() == State.OPEN){
                     res.secondLight.setState(State.OPEN);
                     System.out.println("Feu allumé");
-                    res.boat.moveX(sens,level);
-                    if(sens == 1)
-                        level = 3;
-                    else if (sens == -1)
+                    if(sens == -1 && level == 3){
+                        res.boat.moveBoatX(GlobalVars.BOAT_AMONT_XPOSITION, GlobalVars.BOAT_LEVEL1_MAX_XPOSITION);
                         level = 2;
-                    System.out.println(level);
+                    }
+                    else if(sens == 1 && level == 2){
+                        res.boat.moveBoatX(GlobalVars.BOAT_LEVEL2_XPOSITION, GlobalVars.BOAT_AMONT_XPOSITION);
+                        level = 3;
+                    }
                 }
                 else {
                     System.out.println("Action non autorisée");
