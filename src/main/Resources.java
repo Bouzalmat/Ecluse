@@ -19,6 +19,8 @@ public class Resources {
     Image secondValveImage;
     Image sasImage;
     Image controlBackgroundImage;
+    Image firstLightOnImage;
+    Image secondLightOnImage;
 
    public ImageView backgroundView;
     public ImageView boatView;
@@ -28,6 +30,8 @@ public class Resources {
     public ImageView secondValveView;
     public ImageView sasView;
     public ImageView controlBackgroundView;
+    public ImageView firstLightOnView;
+    public ImageView secondLightOnView;
 
     Boat boat;
     Sas sas;
@@ -37,8 +41,6 @@ public class Resources {
     Valve secondValve;
     Light firstLight;
     Light secondLight;
-
-    Button b;
 
 
     public void loadResourses(int sens) {
@@ -65,6 +67,9 @@ public class Resources {
             secondValveImage = new Image(Res.class.getResourceAsStream("open_valve.png"));
 
             sasImage = new Image(Res.class.getResourceAsStream("sas.png"));
+
+            firstLightOnImage = new Image(Res.class.getResourceAsStream(""));
+            secondLightOnImage = new Image(Res.class.getResourceAsStream(""));
 
             // attaching
             attachDefaultImages(sens);
@@ -134,6 +139,15 @@ public class Resources {
             secondValve = new Valve(secondValveView);
 
             //
+
+            firstLightOnView = new ImageView(firstLightOnImage);
+            firstLightOnView.setTranslateX(GlobalVars.FIRST_LIGHT_ON_XPOSITION);
+            firstLightOnView.setTranslateY(GlobalVars.FIRST_LIGHT_ON_YPOSITION);
+
+            secondLightOnView = new ImageView(secondLightOnImage);
+            secondLightOnView.setTranslateX(GlobalVars.SECOND_LIGHT_ON_XPOSITION);
+            secondLightOnView.setTranslateY(GlobalVars.SECOND_LIGHT_ON_YPOSITION);
+
 
             firstLight = new Light();
             secondLight = new Light();

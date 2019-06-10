@@ -51,6 +51,15 @@ public class GlobalVars {
     //boat speed
     public static final Duration boatDuration = Duration.millis(2200);
 
+    // first light on positions
+    public static final int FIRST_LIGHT_ON_XPOSITION = 235;
+    public static final int FIRST_LIGHT_ON_YPOSITION = 122;
+
+    //second light on positions
+    public static final int SECOND_LIGHT_ON_XPOSITION = 517;
+    public static final int SECOND_LIGHT_ON_YPOSITION = 122;
+
+
 
 
 

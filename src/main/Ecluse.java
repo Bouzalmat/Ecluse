@@ -86,7 +86,7 @@ public class Ecluse extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
-        
+
     }
 
 
@@ -103,7 +103,7 @@ public class Ecluse extends Application {
     // Render center pane
     public Pane initCenterPane() {
         center = new Pane();
-        center.getChildren().addAll(res.backgroundView, res.boatView, res.firstDoorView, res.secondDoorView, res.sasView, res.firstValveView, res.secondValveView);
+        center.getChildren().addAll(res.backgroundView, res.boatView, res.firstDoorView, res.secondDoorView, res.sasView, res.firstValveView, res.secondValveView, res.firstLightOnView, res.secondLightOnView);
         return  center;
     }
 
@@ -233,6 +233,7 @@ public class Ecluse extends Application {
                     if(sens == 1 && level == 1){
                         res.boat.moveBoatX(GlobalVars.BOAT_LEVEL1_MIN_XPOSITION, GlobalVars.BOAT_LEVEL1_MAX_XPOSITION);
                         level = 2;
+                        res.firstLight.firstLightOn(res);
                     }
                     else if (sens == -1 && level == 2){
                         res.boat.moveBoatX(GlobalVars.BOAT_LEVEL2_XPOSITION, GlobalVars.BOAT_LEVEL1_MIN_XPOSITION);
@@ -254,6 +255,7 @@ public class Ecluse extends Application {
                 if( res.firstLight.getState() == State.OPEN){
                     res.firstLight.setState(State.CLOSE);
                     System.out.println("Feu attient");
+                    res.firstLight.firstLightOff(res);
                 }
                 else {
                     System.out.println("Action non autorisée");
@@ -393,6 +395,7 @@ public class Ecluse extends Application {
                     System.out.println("Feu allumé");
                     if(sens == -1 && level == 3){
                         res.boat.moveBoatX(GlobalVars.BOAT_AMONT_XPOSITION, GlobalVars.BOAT_LEVEL1_MAX_XPOSITION);
+                        res.secondLight.secondLightOn(res);
                         level = 2;
                     }
                     else if(sens == 1 && level == 2){
@@ -414,6 +417,7 @@ public class Ecluse extends Application {
             public void handle(ActionEvent event) {
                 if( res.secondLight.getState() == State.OPEN){
                     res.secondLight.setState(State.CLOSE);
+                    res.secondLight.secondLightOff(res);
                     System.out.println("Feu attient");
                 }
                 else {
