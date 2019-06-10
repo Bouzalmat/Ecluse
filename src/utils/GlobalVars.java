@@ -8,7 +8,7 @@ import javafx.util.Duration;
 public class GlobalVars {
     //window size
     public static final int WINDOW_WIDTH = 892;
-    public static final int WINDOW_HEIGHT = 611;
+    public static final int WINDOW_HEIGHT = 595;
 
     //boat positions
     public static final int BOAT_LEVEL1_MIN_XPOSITION = 0;
