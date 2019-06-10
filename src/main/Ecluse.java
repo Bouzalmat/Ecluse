@@ -103,7 +103,7 @@ public class Ecluse extends Application {
     // Render center pane
     public Pane initCenterPane() {
         center = new Pane();
-        center.getChildren().addAll(res.backgroundView, res.boatView, res.firstDoorView, res.secondDoorView, res.sasView, res.firstValveView, res.secondValveView, res.firstLightOnView, res.secondLightOnView);
+        center.getChildren().addAll(res.backgroundView, res.boatView, res.firstDoorView, res.sasView, res.secondDoorView, res.firstValveView, res.secondValveView, res.firstLightOnView, res.secondLightOnView);
         return  center;
     }
 
