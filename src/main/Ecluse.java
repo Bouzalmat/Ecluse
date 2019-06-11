@@ -40,6 +40,7 @@ public class Ecluse extends Application {
     public void start(Stage primaryStage) throws Exception {
         root = new BorderPane();
         scene = new Scene(root, GlobalVars.WINDOW_WIDTH, GlobalVars.WINDOW_HEIGHT);
+        primaryStage.setResizable(false);
 
         //creating MenuBar
         MenuBar menubar = new MenuBar();
@@ -68,7 +69,6 @@ public class Ecluse extends Application {
                 sasLevel = GlobalVars.SAS_MIN_YPOSITION;
                 initResourses(sens);
                 root.setCenter(initCenterPane());
-                System.out.println(sasLevel);
             }
         };
         EventHandler<ActionEvent> amantToAvalEvent = new EventHandler<ActionEvent>() {
@@ -188,8 +188,12 @@ public class Ecluse extends Application {
                     res.firstDoor.open();
                     res.firstDoor.setState(State.OPEN);
                 }
-                else
-                    errors.setText("Action non autorisée");
+                else if(res.firstDoor.getState() == State.OPEN)
+                    errors.setText("La porte est déja ouverte");
+                else if (res.firstValve.getState() == State.OPEN)
+                    errors.setText("La vanne est ouverte");
+                else if (sasLevel == GlobalVars.SAS_MAX_YPOSITION )
+                    errors.setText("Le niveau de l'eau n'est pas équilibré");
             }
         };
         return  event;
@@ -204,9 +208,10 @@ public class Ecluse extends Application {
                         res.firstDoor.close();
                         res.firstDoor.setState(State.CLOSE);
                 }
-                else {
-                    errors.setText("Action non autorisée");
-                }
+                else if(res.firstDoor.getState() == State.CLOSE)
+                    errors.setText("La porte est déja fermée");
+                else if(res.firstLight.getState() == State.OPEN)
+                    errors.setText("Le feu est allumé");
             }
         };
         return  event;
@@ -220,15 +225,24 @@ public class Ecluse extends Application {
                 if(sasLevel == GlobalVars.SAS_MAX_YPOSITION && res.firstValve.getState() == State.CLOSE && res.secondValve.getState() == State.CLOSE && res.firstDoor.getState() == State.CLOSE && res.secondDoor.getState() == State.CLOSE){
                     res.firstValve.openFirstValve(res);
                     if(level == 2){
-                        res.boat.moveBoatY(GlobalVars.BOAT_MAX_YPOSITION, GlobalVars.BOAT_MIN_YPOSITION); // a régler
+                        res.boat.moveBoatY(GlobalVars.BOAT_MAX_YPOSITION, GlobalVars.BOAT_MIN_YPOSITION);
                     }
                     res.sas.close();
                     sasLevel = GlobalVars.SAS_MIN_YPOSITION;
                     res.firstValve.setState(State.OPEN);
                 }
-                else {
+                else if (res.firstValve.getState() == State.OPEN)
+                    errors.setText("La vanne est déja ouverte");
+                else if (sasLevel == GlobalVars.SAS_MIN_YPOSITION)
+                    errors.setText("Le niveau d'eau est déja équilibré");
+                else if(res.secondValve.getState() == State.OPEN)
+                    errors.setText("L'autre vanne est ouverte");
+                else if(res.firstDoor.getState() == State.OPEN)
+                    errors.setText("La porte niveau aval est ouverte");
+                else if (res.secondDoor.getState() == State.OPEN)
+                    errors.setText("La porte niveau amaont est ouverte");
+                else
                     errors.setText("Action non autorisée");
-                }
             }
         };
         return event;
@@ -243,9 +257,8 @@ public class Ecluse extends Application {
                     res.firstValve.closeFirstValve(res);
                     res.firstValve.setState(State.CLOSE);
                 }
-                else {
-                    errors.setText("Action non autorisée");
-                }
+                else
+                    errors.setText("La vanne est déja fermée");
             }
         };
         return event;
@@ -268,9 +281,10 @@ public class Ecluse extends Application {
                         level = 1;
                     }
                 }
-                else {
-                    errors.setText("Action non autorisée");
-                }
+                else if (res.firstLight.getState() == State.OPEN)
+                    errors.setText("Le feu est déja allumé");
+                else if (res.firstDoor.getState() == State.CLOSE)
+                    errors.setText("La porte est fermée");
             }
         };
         return event;
@@ -283,12 +297,10 @@ public class Ecluse extends Application {
                 intitializeText(errors);
                 if( res.firstLight.getState() == State.OPEN){
                     res.firstLight.setState(State.CLOSE);
-                    System.out.println("Feu attient");
                     res.firstLight.firstLightOff(res);
                 }
-                else {
-                    errors.setText("Action non autorisée");
-                }
+                else
+                    errors.setText("Le feu est déja éteint");
             }
         };
         return event;
@@ -350,13 +362,14 @@ public class Ecluse extends Application {
                 intitializeText(errors);
                 if(res.secondDoor.getState() == State.CLOSE && sasLevel == GlobalVars.SAS_MAX_YPOSITION && res.secondValve.getState() == State.CLOSE) {
                     res.secondDoor.open();
-                    System.out.println(res.secondDoor.getState());
                     res.secondDoor.setState(State.OPEN);
-                    System.out.println(res.secondDoor.getState());
                 }
-                else {
-                    errors.setText("Action non autorisée");
-                }
+                else if(res.secondDoor.getState() == State.OPEN)
+                    errors.setText("La porte est déja ouverte");
+                else if (res.secondValve.getState() == State.OPEN)
+                    errors.setText("La vanne est ouverte");
+                else if (sasLevel == GlobalVars.SAS_MIN_YPOSITION )
+                    errors.setText("Le niveau de l'eau n'est pas équilibré");
             }
         };
         return  event;
@@ -371,9 +384,12 @@ public class Ecluse extends Application {
                     res.secondDoor.close();
                     res.secondDoor.setState(State.CLOSE);
                 }
-                else {
+                else if(res.secondDoor.getState() == State.CLOSE)
+                    errors.setText("La porte est déja fermée");
+                else if(res.secondLight.getState() == State.OPEN)
+                    errors.setText("Le feu est allumé");
+                else
                     errors.setText("Action non autorisée");
-                }
             }
         };
         return  event;
@@ -384,7 +400,7 @@ public class Ecluse extends Application {
             @Override
             public void handle(ActionEvent event) {
                 intitializeText(errors);
-                if(sasLevel == GlobalVars.SAS_MIN_YPOSITION && res.secondValve.getState() == State.CLOSE && res.firstDoor.getState() == State.CLOSE && res.secondDoor.getState() == State.CLOSE && res.firstDoor.getState() == State.CLOSE && res.firstValve.getState() == State.CLOSE){
+                if(sasLevel == GlobalVars.SAS_MIN_YPOSITION && res.secondValve.getState() == State.CLOSE && res.secondDoor.getState() == State.CLOSE && res.firstDoor.getState() == State.CLOSE && res.firstValve.getState() == State.CLOSE){
                     res.firstValve.openSecondValve(res);
                     if(level == 2){
                         res.boat.moveBoatY(GlobalVars.BOAT_MIN_YPOSITION, GlobalVars.BOAT_MAX_YPOSITION);
@@ -393,9 +409,18 @@ public class Ecluse extends Application {
                     sasLevel = GlobalVars.SAS_MAX_YPOSITION;
                     res.secondValve.setState(State.OPEN);
                 }
-                else {
+                else if (res.secondValve.getState() == State.OPEN)
+                    errors.setText("La vanne est déja ouverte");
+                else if (sasLevel == GlobalVars.SAS_MAX_YPOSITION)
+                    errors.setText("Le niveau d'eau est déja équilibré");
+                else if(res.firstValve.getState() == State.OPEN)
+                    errors.setText("L'autre vanne est ouverte");
+                else if(res.firstDoor.getState() == State.OPEN)
+                    errors.setText("La porte niveau aval est ouverte");
+                else if (res.secondDoor.getState() == State.OPEN)
+                    errors.setText("La porte niveau amaont est ouverte");
+                else
                     errors.setText("Action non autorisée");
-                }
             }
         };
         return event;
@@ -410,9 +435,8 @@ public class Ecluse extends Application {
                     res.secondValve.closeSecondValve(res);
                     res.secondValve.setState(State.CLOSE);
                 }
-                else {
-                    errors.setText("Action non autorisée");
-                }
+                else
+                    errors.setText("La vanne est déja fermée");
             }
         };
         return event;
@@ -435,9 +459,10 @@ public class Ecluse extends Application {
                         level = 3;
                     }
                 }
-                else {
-                    errors.setText("Action non autorisée");
-                }
+                else if (res.secondLight.getState() == State.OPEN)
+                    errors.setText("Le feu est déja allumé");
+                else if (res.secondDoor.getState() == State.CLOSE)
+                    errors.setText("La porte est fermée");
             }
         };
         return event;
@@ -451,11 +476,9 @@ public class Ecluse extends Application {
                 if( res.secondLight.getState() == State.OPEN){
                     res.secondLight.setState(State.CLOSE);
                     res.secondLight.secondLightOff(res);
-                    System.out.println("Feu attient");
                 }
-                else {
-                    errors.setText("Action non autorisée");
-                }
+                else
+                    errors.setText("Le feu déja est éteint");
             }
         };
         return event;
